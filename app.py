@@ -17,5 +17,8 @@ app.config.update(
 api.add_resource(ListPods, '/list-pods')
 
 
+
+app.debug = True
+
 if __name__ == "__main__":
     app.run()
