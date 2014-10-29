@@ -1,9 +1,9 @@
 from flask import Flask
 from flask.ext import restful
 
-from app.api.ListPods import ListPods
 from app.api.Run import Run
 from app.api.ResizeReplicationController import ResizeReplicationController
+from app.api.List import List
 
 app = Flask(__name__)
 api = restful.Api(app)
@@ -17,8 +17,11 @@ app.config.update(
     API_PASS='8kWoiRHXgxNd20dS'
 )
 
-# list pods - to make sure works
-api.add_resource(ListPods, '/list-pods')
+# lists:
+api.add_resource(List,
+                 '/pods',
+                 '/replicationControllers',
+                 '/services')
 
 # run pods
 # /<string:dockerfile>/<string:num_pods>/<string:name>
