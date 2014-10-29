@@ -13,8 +13,6 @@ class List(restful.Resource):
         if 'item_id' in locals():
             url += '/{}'.format(item_id)
 
-        print url
-
         r = requests.get(url, auth=(app.config['API_USER'], app.config['API_PASS']), verify=False)
         return r.json()
 

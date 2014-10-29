@@ -5,8 +5,6 @@ import json
 
 from flask import current_app as app
 
-
-
 # request.args.get('myParam')
 
 # cluster/kubecfg.sh -p 8080:80 run ec2-54-82-197-2.compute-1.amazonaws.com:5000/jenkins_pipeline 2 jenkins-master
@@ -20,7 +18,7 @@ class ResizeReplicationController(Resource):
         parser.add_argument('num', type=int, help='num_pods cannot be converted')
         args = parser.parse_args()
 
-        controller_url = 'https://130.211.122.34/api/v1beta1/replicationControllers/' + args['id']
+        controller_url = 'https://{0}/api/v1beta1/replicationControllers/{1}'.format(app.config['MASTER_IP'], args['id'])
 
         # request = urllib2.Request('https://130.211.122.34/api/v1beta1/replicationControllers/' + args['id'], headers={'Authorization': 'Basic YWRtaW46OGtXb2lSSFhneE5kMjBkUw=='})
         # response = urllib2.urlopen(request)
