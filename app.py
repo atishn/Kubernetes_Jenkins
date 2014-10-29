@@ -14,14 +14,18 @@ app.config.update(
     KUBE_ROOT='../kubernetes',
     KUBE_CFG='/cluster/kubecfg.sh',
     API_USER='admin',
-    API_PASS='8kWoiRHXgxNd20dS'
+    API_PASS='8kWoiRHXgxNd20dS',
+    MASTER_IP='130.211.122.34'
 )
 
 # lists:
 api.add_resource(List,
                  '/pods',
                  '/replicationControllers',
-                 '/services')
+                 '/services',
+                 '/pods/<string:item_id>',
+                 '/replicationControllers/<string:item_id>',
+                 '/services/<string:item_id>')
 
 # run pods
 # /<string:dockerfile>/<string:num_pods>/<string:name>
