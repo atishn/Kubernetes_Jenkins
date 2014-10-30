@@ -3,7 +3,7 @@ from flask import current_app as app
 import json
 import requests
 
-def new_replication_controller(name, num, image):
+def new_replication_controller(name, num, image, containerPort, hostPort):
     
     req_obj = {
         "id": name + 'Controller',
@@ -20,7 +20,7 @@ def new_replication_controller(name, num, image):
                  "containers": [{
                    "name": name,
                    "image": app.config['DOCKER_REGISTRY'] + '/' + image,
-                   "ports": [{"containerPort": 8080, "hostPort": 49162}]
+                   "ports": [{"containerPort": containerPort, "hostPort": hostPort}]
                  }]
                }
              },
@@ -67,3 +67,41 @@ def get_replication_size(controller_id):
         return False
 
     return controller_json['desiredState']['replicas']
+
+def new_pod(name, image, containerPort, hostPort):
+    req_obj = {
+      "id": name,
+      "kind": "Pod",
+      "apiVersion": "v1beta1",
+      "desiredState": {
+        "manifest": {
+          "version": "v1beta1",
+          "id": name,
+          "containers": [
+            {
+              "name": name,
+              "image": app.config['DOCKER_REGISTRY'] + '/' + image,
+              "ports": [
+                {
+                  "containerPort": containerPort,
+                  "hostPort": hostPort
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "labels": {
+        "name": name
+      }
+    }
+
+    req_json = json.dumps(req_obj)
+
+
+    url = 'https://{0}/api/v1beta1/pods'.format(app.config['MASTER_IP'])
+
+    print req_json
+
+    r = requests.post(url, data=req_json, auth=(app.config['API_USER'], app.config['API_PASS']), verify=False)
+    return r.json()

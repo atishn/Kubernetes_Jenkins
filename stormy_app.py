@@ -5,6 +5,7 @@ from app.api.Run import Run
 from app.api.ResizeReplicationController import ResizeReplicationController
 from app.api.List import List
 from app.api.NewReplicationController import NewReplicationController
+from app.api.NewPod import NewPod
 from app.helpers.api_helpers import resize_replication_controller
 
 from app.helpers.celery_helpers import make_celery
@@ -43,12 +44,6 @@ app.config.update(
 celery = make_celery(app)
 
 @celery.task()
-def add_together(a, b):
-    res = a + b
-    print res
-    return res
-
-@celery.task()
 def check_jobs_and_scale():
     num_running_jobs = get_running_jenkins_jobs()
     if num_running_jobs == 0:
@@ -70,8 +65,8 @@ api.add_resource(List,
 
 # new - replication controller for now
 # requires 'id' and 'num' params
-api.add_resource(NewReplicationController,
-                 '/new/replicationController')
+api.add_resource(NewReplicationController, '/new/replicationController')
+api.add_resource(NewPod, '/new/pod')
 
 # run pods
 api.add_resource(Run, '/run')
