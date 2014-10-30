@@ -1,4 +1,5 @@
 from flask.ext.restful import reqparse, Resource
+from app.helpers.api_helpers import resize_replication_controller
 
 import requests
 import json
@@ -18,24 +19,7 @@ class ResizeReplicationController(Resource):
         parser.add_argument('num', type=int, help='num_pods cannot be converted')
         args = parser.parse_args()
 
-        controller_url = 'https://{0}/api/v1beta1/replicationControllers/{1}'.format(app.config['MASTER_IP'], args['id'])
-
-        # request = urllib2.Request('https://130.211.122.34/api/v1beta1/replicationControllers/' + args['id'], headers={'Authorization': 'Basic YWRtaW46OGtXb2lSSFhneE5kMjBkUw=='})
-        # response = urllib2.urlopen(request)
-        # current_contoller = json.loads((response.read()))
-
-        request_controller = requests.get(controller_url, auth=(app.config['API_USER'], app.config['API_PASS']), verify=False)
-        current_controller =  request_controller.json()
-
-        if current_controller['kind'] == "Status":
-            return current_controller
-
-        current_controller['desiredState']['replicas'] = args['num']
-
-        # need to dump to get rid of unicode u'
-        new_controller = json.dumps(current_controller)
-
-        put_response = requests.put(controller_url, data=new_controller, auth=(app.config['API_USER'], app.config['API_PASS']), verify=False)
-        return put_response.json()
+        server_response = resize_replication_controller(args['id'], args['num'])
+        return server_response
 
 
