@@ -20,7 +20,7 @@ def new_replication_controller(name, num, image):
                  "containers": [{
                    "name": name,
                    "image": app.config['DOCKER_REGISTRY'] + '/' + image,
-                   "ports": [{"containerPort": 80, "hostPort": 8080}]
+                   "ports": [{"containerPort": 8080, "hostPort": 49162}]
                  }]
                }
              },
@@ -56,3 +56,14 @@ def resize_replication_controller(controller_id, num):
 
     put_response = requests.put(controller_url, data=new_controller, auth=(app.config['API_USER'], app.config['API_PASS']), verify=False)
     return put_response.json()
+
+def get_replication_size(controller_id):
+    controller_url = 'https://{0}/api/v1beta1/replicationControllers/{1}'.format(app.config['MASTER_IP'], controller_id)
+
+    controller = requests.get(controller_url, auth=(app.config['API_USER'], app.config['API_PASS']), verify=False)
+    controller_json =  controller.json()
+
+    if controller_json['kind'] == "Status":
+        return False
+
+    return controller_json['desiredState']['replicas']

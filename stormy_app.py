@@ -9,6 +9,7 @@ from app.helpers.api_helpers import resize_replication_controller
 
 from app.helpers.celery_helpers import make_celery
 from app.helpers.jenkins_helpers import get_running_jenkins_jobs
+from app.helpers.api_helpers import get_replication_size
 from celery.schedules import crontab
 
 app = Flask(__name__)
@@ -34,7 +35,8 @@ app.config.update(
     },
     JENKINS_URL='http://nyicolo-dev87.ad.hugeinc.com/',
     JENKINS_USER='',
-    JENKINS_PASS=''
+    JENKINS_PASS='',
+    JENKINS_SLAVE_CONTROLLER='jenkinsslaveController'
 )
 
 # Stalk
@@ -49,7 +51,12 @@ def add_together(a, b):
 @celery.task()
 def check_jobs_and_scale():
     num_running_jobs = get_running_jenkins_jobs()
-    resize_replication_controller('jenkinsmasterController', num_running_jobs + 1)
+    if num_running_jobs == 0:
+        resize_replication_controller(app.config['JENKINS_SLAVE_CONTROLLER'], 1)
+    else:
+        current_rc_size = get_replication_size(app.config['JENKINS_SLAVE_CONTROLLER'])
+        if current_rc_size < (num_running_jobs / 5):
+            resize_replication_controller(app.config['JENKINS_SLAVE_CONTROLLER'], (num_running_jobs / 5))
 
 
 # lists:
