@@ -5,6 +5,9 @@ from app.api.Run import Run
 from app.api.ResizeReplicationController import ResizeReplicationController
 from app.api.List import List
 from app.api.NewAPI import NewReplicationController
+from app.helpers.celery_helpers import make_celery
+
+from celery.schedules import crontab
 
 app = Flask(__name__)
 api = restful.Api(app)
@@ -17,8 +20,26 @@ app.config.update(
     API_USER='admin',
     API_PASS='8kWoiRHXgxNd20dS',
     MASTER_IP='130.211.122.34',
-    DOCKER_REGISTRY='ec2-54-82-197-2.compute-1.amazonaws.com:5000'
+    DOCKER_REGISTRY='ec2-54-82-197-2.compute-1.amazonaws.com:5000',
+    CELERY_BROKER_URL='redis://localhost:6379',
+    CELERY_RESULT_BACKEND='redis://localhost:6379',
+    CELERYBEAT_SCHEDULE = {
+        'every-minute': {
+            'task': 'stormy_app.add_together',
+            'schedule': crontab(minute='*/1'),
+            'args': (1,2),
+        },
+    }
 )
+
+# Stalk
+celery = make_celery(app)
+
+@celery.task()
+def add_together(a, b):
+    res = a + b
+    print res
+    return res
 
 # lists:
 api.add_resource(List,
