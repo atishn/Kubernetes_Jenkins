@@ -10,8 +10,8 @@ class NewPod(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('name', type=str)
         parser.add_argument('image', type=str)
-        parser.add_argument('containerPort', type=str)
-        parser.add_argument('hostPort', type=str)
+        parser.add_argument('containerPort', type=int)
+        parser.add_argument('hostPort', type=int)
         args = parser.parse_args()
 
         server_response = new_pod(args['name'], args['image'], args['containerPort'], args['hostPort'])
