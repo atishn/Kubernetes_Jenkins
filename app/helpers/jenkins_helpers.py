@@ -10,7 +10,7 @@ def get_running_jenkins_jobs():
     jobs = server.get_jobs()
     for j in jobs:
         job_instance = server.get_job(j[0])
-        if job_instance.is_running():
+        if job_instance.is_queued_or_running():
             num_running += 1
     print num_running
     return num_running
