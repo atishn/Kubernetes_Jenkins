@@ -1,10 +1,7 @@
 from flask.ext.restful import reqparse, Resource
+
 from app.helpers.api_helpers import resize_replication_controller
 
-import requests
-import json
-
-from flask import current_app as app
 
 # request.args.get('myParam')
 

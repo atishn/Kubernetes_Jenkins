@@ -1,11 +1,7 @@
-from flask.ext.restful import reqparse, Resource
-
-from flask import current_app as app
-
 import subprocess
-import sys
-import json
-import yaml
+
+from flask.ext.restful import reqparse, Resource
+from flask import current_app as app
 
 PORT = '8080:80'
 

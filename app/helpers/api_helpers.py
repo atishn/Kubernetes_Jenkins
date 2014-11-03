@@ -1,6 +1,6 @@
-from flask import current_app as app
-
 import json
+
+from flask import current_app as app
 import requests
 
 def new_replication_controller(name, num, image, containerPort, hostPort):

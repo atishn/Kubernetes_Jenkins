@@ -1,10 +1,7 @@
 from flask.ext.restful import reqparse, Resource
 
-from flask import current_app as app
 from app.helpers.api_helpers import new_replication_controller
 
-import requests
-import json
 
 class NewReplicationController(Resource):
 
