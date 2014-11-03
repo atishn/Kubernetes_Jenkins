@@ -21,3 +21,9 @@ class NewReplicationController(Resource):
         server_response = new_replication_controller(args['name'], args['num'], args['image'], args['containerPort'], args['hostPort'])
 
         return server_response
+
+class NewSlaveReplication(Resource):
+    def get(self):
+        server_response = new_replication_controller('jenkinsslave', 2, 'jenkins_slave_docker', 48673, 48673)
+
+        return server_response
