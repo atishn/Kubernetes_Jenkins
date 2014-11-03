@@ -4,6 +4,7 @@ from flask.ext import restful
 from app.api.Run import Run
 from app.api.ResizeReplicationController import ResizeReplicationController
 from app.api.List import List
+from app.api.PodHosts import PodHosts
 from app.api.NewReplicationController import NewReplicationController, NewSlaveReplication
 from app.api.NewPod import NewPod, NewJenkinsMaster
 from app.helpers.api_helpers import resize_replication_controller
@@ -66,6 +67,10 @@ api.add_resource(List,
                  '/pods/<string:item_id>',
                  '/replicationControllers/<string:item_id>',
                  '/services/<string:item_id>')
+
+
+api.add_resource(PodHosts,
+                 '/pods/<string:item_id>/hostIP')
 
 # TODO change these to post/put requests
 # new - replication controller for now
