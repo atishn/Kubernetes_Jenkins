@@ -1,6 +1,5 @@
 from flask.ext.restful import reqparse, Resource
 
-from flask import current_app as app
 from app.helpers.api_helpers import new_pod
 
 class NewPod(Resource):

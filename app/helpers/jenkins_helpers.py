@@ -1,8 +1,6 @@
-import jenkinsapi
 from jenkinsapi.jenkins import Jenkins
 
 from flask import current_app as app
-
 
 def get_running_jenkins_jobs():
     num_running = 0
@@ -14,7 +12,6 @@ def get_running_jenkins_jobs():
             num_running += 1
     print num_running
     return num_running
-
 
 
 def get_jenkins_server_instance():

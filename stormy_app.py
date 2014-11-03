@@ -9,6 +9,7 @@ from app.api.NewPod import NewPod
 from app.helpers.api_helpers import resize_replication_controller
 
 from app.helpers.celery_helpers import make_celery
+
 from app.helpers.jenkins_helpers import get_running_jenkins_jobs
 from app.helpers.api_helpers import get_replication_size
 from celery.schedules import crontab
