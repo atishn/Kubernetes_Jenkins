@@ -4,8 +4,8 @@ from flask.ext import restful
 from app.api.Run import Run
 from app.api.ResizeReplicationController import ResizeReplicationController
 from app.api.List import List
-from app.api.NewReplicationController import NewReplicationController
-from app.api.NewPod import NewPod
+from app.api.NewReplicationController import NewReplicationController, NewSlaveReplication
+from app.api.NewPod import NewPod, NewJenkinsMaster
 from app.helpers.api_helpers import resize_replication_controller
 
 from app.helpers.celery_helpers import make_celery
@@ -28,7 +28,7 @@ app.config.update(
     # API_USER='vagrant',
     # API_PASS='vagrant',
     # MASTER_IP='10.245.1.2',
-    DOCKER_REGISTRY='ec2-54-161-183-146.compute-1.amazonaws.com:5000',
+    DOCKER_REGISTRY='huge',
     CELERY_BROKER_URL='redis://localhost:6379',
     CELERY_RESULT_BACKEND='redis://localhost:6379',
     CELERYBEAT_SCHEDULE = {
@@ -67,16 +67,21 @@ api.add_resource(List,
                  '/replicationControllers/<string:item_id>',
                  '/services/<string:item_id>')
 
+# TODO change these to post/put requests
 # new - replication controller for now
 # requires 'id' and 'num' params
 api.add_resource(NewReplicationController, '/new/replicationController')
-api.add_resource(NewPod, '/new/pod')
+api.add_resource(NewSlaveReplication, '/new/slaves')
 
-# run pods
-api.add_resource(Run, '/run')
+api.add_resource(NewPod, '/new/pod')
+api.add_resource(NewJenkinsMaster, '/new/master')
 
 # resize existing application controller, requires 'id' and 'num' params
 api.add_resource(ResizeReplicationController, '/resize')
+
+
+# run pods
+api.add_resource(Run, '/run')
 
 app.debug = True
 

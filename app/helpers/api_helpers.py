@@ -68,7 +68,9 @@ def get_replication_size(controller_id):
 
     return controller_json['desiredState']['replicas']
 
-def new_pod(name, image, containerPort, hostPort):
+def new_pod(name, image, ports):
+    ports_json = bulid_ports_json(ports)
+
     req_obj = {
       "id": name,
       "kind": "Pod",
@@ -81,12 +83,7 @@ def new_pod(name, image, containerPort, hostPort):
             {
               "name": name,
               "image": app.config['DOCKER_REGISTRY'] + '/' + image,
-              "ports": [
-                {
-                  "containerPort": containerPort,
-                  "hostPort": hostPort
-                }
-              ]
+              "ports": ports_json
             }
           ]
         }
@@ -105,3 +102,13 @@ def new_pod(name, image, containerPort, hostPort):
 
     r = requests.post(url, data=req_json, auth=(app.config['API_USER'], app.config['API_PASS']), verify=False)
     return r.json()
+
+def bulid_ports_json(ports):
+    port_json = []
+
+    for p in ports:
+        json = {'containerPort': p[0], 'hostPort': p[1]}
+        port_json.append(json)
+
+
+    return port_json
