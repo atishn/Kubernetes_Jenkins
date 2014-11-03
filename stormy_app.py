@@ -41,7 +41,6 @@ app.config.update(
             'args': (),
         },
     },
-    #JENKINS_URL='http://23.251.155.231:49151/',
     JENKINS_USER='',
     JENKINS_PASS='',
     JENKINS_SLAVE_CONTROLLER='jenkinsslaveController'
