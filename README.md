@@ -44,3 +44,7 @@ Visit http://localhost:5000/resize?id=<controller_name>&num=<new_size>. For exam
 Visit http://localhost:5000/services to see a json list of the current pods
 Visit http://localhost:5000/sevices/<service_id> to see info for a specific pod
 
+
+## Shortcuts
+Visit http://localhost:5000/new/master to start a jenkins master pod with default configuration.
+Visit http://localhost:5000/new/slave to start a jenkins slave replicationController with default configuration
