@@ -103,6 +103,43 @@ def new_pod(name, image, ports):
     r = requests.post(url, data=req_json, auth=(app.config['API_USER'], app.config['API_PASS']), verify=False)
     return r.json()
 
+def list_objects(item_id):
+    url = 'https://{0}/api/v1beta1/{1}'.format(app.config['MASTER_IP'], item_id)
+
+    r = requests.get(url, auth=(app.config['API_USER'], app.config['API_PASS']), verify=False)
+    return r.json()
+
+def get_pod_byid(id):
+    url = 'https://{0}/api/v1beta1/pods/{1}'.format(app.config['MASTER_IP'], id)
+    r = requests.get(url, auth=(app.config['API_USER'], app.config['API_PASS']), verify=False)
+    return r.json()
+
+def findHostPort(pod):
+    hostIp = pod.get('currentState').get('hostIP')
+    return hostIp
+
+def new_service(name, serviceport, containerport, selectorkey, selectorvalue):
+
+    req_obj = {
+        "id": name,
+        "kind": "Service",
+        "apiVersion": "v1beta1",
+        "protocol": "TCP",
+        "port": serviceport,
+        "containerPort": containerport,
+        "selector": {
+            selectorkey: selectorvalue
+        }
+    }
+
+    req_json = json.dumps(req_obj)
+
+    url = 'https://{0}/api/v1beta1/services'.format(app.config['MASTER_IP'])
+
+    print req_json
+    r = requests.post(url, data=req_json, auth=(app.config['API_USER'], app.config['API_PASS']), verify=False)
+    return r.json()
+
 def bulid_ports_json(ports):
     port_json = []
 
