@@ -6,15 +6,17 @@ The kubernetes master server ('kubernetes-master') has a built in API as describ
 
 We have created this [simple flask app](https://stash.hugeinc.com/projects/GLCS/repos/stormy-flask/browse) that utilizes that api as a POC. The longterm plan is to have these api calls be fired automatically to resize the jenkins slaves based on usage using Celery.
 
+Stormy Flask app and Celery Cron job both needs ip address of master_kube_ip for http connection.
+
 ## Run the app:
 
 Download the [repo](https://stash.hugeinc.com/projects/GLCS/repos/stormy-flask/browse) and run:
 
     brew install redis
     pip install -r requirements.txt
-    python stormy_app.py
+    python stormy_app.py --master_kube_ip <130.211.113.209>
     redis-server /usr/local/etc/redis.conf
-    celery -A stormy_app.celery worker --loglevel=info --beat
+    celery -A stormy_app.celery worker --loglevel=info --beat --master_kube_ip=130.211.113.209
 
 
 ### New Pod

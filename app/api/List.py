@@ -5,6 +5,6 @@ from app.helpers import api_helpers
 
 
 class List(restful.Resource):
-    def get(self):
+    def get(self, item_id=None):
         return api_helpers.list_objects(request.path)
 

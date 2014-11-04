@@ -24,7 +24,7 @@ class NewSlaveReplication(Resource):
         pod = get_pod_byid('jenkinsmaster')
         podIp = findHostPort(pod)
 
-        server_response = new_replication_controller('jenkinsslave', 1, 'jenkins_slave_docker', [[48673, 48673]],
+        server_response = new_replication_controller('jenkinsslave', 2, 'jenkins_slave_docker', [[48673, 48673]],
                                                      [["MASTERHOST", podIp]])
 
         return server_response

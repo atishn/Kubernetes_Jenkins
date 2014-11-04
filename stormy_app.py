@@ -9,8 +9,11 @@ from app.api.ReplicationController import NewReplicationController, NewSlaveRepl
 from app.api.Pod import NewPod, NewJenkinsMaster
 from app.api.Services import NewService, NewMasterService
 from app.helpers.api_helpers import resize_replication_controller
+from oauth2client.tools import argparser
 
 from app.helpers.celery_helpers import make_celery
+from celery import signals
+from celery.bin import Option
 
 from app.helpers.jenkins_helpers import get_running_jenkins_jobs
 from app.helpers.api_helpers import get_replication_size
@@ -22,8 +25,7 @@ api = restful.Api(app)
 # Set local vars
 # TODO move password out of code
 app.config.update(
-    MASTER_IP='130.211.122.34',
-
+    DEFAULT_MASTER_KUBE_IP='130.211.122.34',
     KUBE_ROOT='../kubernetes',
     KUBE_CFG='/cluster/kubecfg.sh',
     API_USER='admin',
@@ -34,7 +36,7 @@ app.config.update(
     DOCKER_REGISTRY='huge',
     CELERY_BROKER_URL='redis://146.148.35.179:6379',
     CELERY_RESULT_BACKEND='redis://146.148.35.179:6379',
-    CELERYBEAT_SCHEDULE = {
+    CELERYBEAT_SCHEDULE={
         'every-minute': {
             'task': 'stormy_app.check_jobs_and_scale',
             'schedule': crontab(minute='*/1'),
@@ -48,6 +50,17 @@ app.config.update(
 
 # Stalk
 celery = make_celery(app)
+
+celery.user_options['preload'].add(
+    Option('-Z', '--master_kube_ip', default=app.config['DEFAULT_MASTER_KUBE_IP'],
+           help='Configuration template to use.'),
+)
+
+
+@signals.user_preload_options.connect
+def on_preload_parsed(options, **kwargs):
+    app.config['MASTER_IP'] = options['master_kube_ip']
+
 
 @celery.task()
 def check_jobs_and_scale():
@@ -69,7 +82,6 @@ api.add_resource(List,
                  '/replicationControllers/<string:item_id>',
                  '/services/<string:item_id>')
 
-
 api.add_resource(PodHosts,
                  '/pods/<string:item_id>/hostIP')
 
@@ -81,7 +93,6 @@ api.add_resource(NewReplicationController, '/new/replicationController')
 api.add_resource(NewPod, '/new/pod')
 api.add_resource(NewService, '/new/service')
 api.add_resource(NewMasterService, '/new/service-master')
-
 
 api.add_resource(NewJenkinsMaster, '/new/master')
 api.add_resource(NewSlaveReplication, '/new/slaves')
@@ -98,4 +109,8 @@ api.add_resource(Run, '/run')
 app.debug = True
 
 if __name__ == "__main__":
+    argparser.add_argument("--master_kube_ip", help="Search term", default=app.config['DEFAULT_MASTER_KUBE_IP'])
+
+    args = argparser.parse_args()
+    app.config['MASTER_IP'] = args.master_kube_ip
     app.run()
