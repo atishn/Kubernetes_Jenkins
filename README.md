@@ -26,7 +26,7 @@ http://localhost:5000/new/slaves
 
 ##Run the Docker
 docker build -t docker_stormy .
-docker run -d -p 22 -p 5000:5000 -e "MASTERKUBEIP=130.211.113.209" --name stormy_app -t docker_stormy
+docker run -d -p 22 -e "MASTERKUBEIP=130.211.113.209" --name stormy_app -t docker_stormy
 docker tag docker_stormy huge/docker_stormy
 docker push huge/docker_stormy
 
