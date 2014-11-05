@@ -113,4 +113,4 @@ if __name__ == "__main__":
 
     args = argparser.parse_args()
     app.config['MASTER_IP'] = args.master_kube_ip
-    app.run()
+    app.run(host='0.0.0.0')

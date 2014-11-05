@@ -15,8 +15,20 @@ Download the [repo](https://stash.hugeinc.com/projects/GLCS/repos/stormy-flask/b
     brew install redis
     pip install -r requirements.txt
     python stormy_app.py --master_kube_ip <130.211.113.209>
-    redis-server /usr/local/etc/redis.conf
     celery -A stormy_app.celery worker --loglevel=info --beat --master_kube_ip=130.211.113.209
+
+# Add new master
+http://localhost:5000/new/master
+
+# Add new slave clusters
+http://localhost:5000/new/slaves
+
+
+##Run the Docker
+docker build -t docker_stormy .
+docker run -d -p 22 -p 5000:5000 -e "MASTERKUBEIP=130.211.113.209" --name stormy_app -t docker_stormy
+docker tag docker_stormy huge/docker_stormy
+docker push huge/docker_stormy
 
 
 ### New Pod
@@ -50,3 +62,8 @@ Visit http://localhost:5000/sevices/<service_id> to see info for a specific pod
 ## Shortcuts
 Visit http://localhost:5000/new/master to start a jenkins master pod with default configuration.
 Visit http://localhost:5000/new/slave to start a jenkins slave replicationController with default configuration
+
+
+
+
+
