@@ -1,6 +1,6 @@
 from flask.ext.restful import reqparse, Resource
 
-from stormy.app.helpers.api_helpers import new_replication_controller, get_pod_byid, findHostPort
+from app.helpers.api_helpers import new_replication_controller, get_pod_byid, findHostPort
 
 
 class NewReplicationController(Resource):

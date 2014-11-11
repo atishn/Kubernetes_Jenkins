@@ -1,7 +1,7 @@
 from flask.ext import restful
 from flask import request
 
-from stormy.app.helpers import api_helpers
+from app.helpers import api_helpers
 
 
 class List(restful.Resource):

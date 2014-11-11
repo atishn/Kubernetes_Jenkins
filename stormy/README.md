@@ -14,8 +14,11 @@ Download the [repo](https://stash.hugeinc.com/projects/GLCS/repos/stormy-flask/b
 
     brew install redis
     pip install -r requirements.txt
-    python stormy_app.py --master_kube_ip <130.211.113.209>
+    python stormy_app.py --master_kube_ip 130.211.113.209
     celery -A stormy_app.celery worker --loglevel=info --beat --master_kube_ip=130.211.113.209
+
+# Use Fig App to make your life easy
+    fig up
 
 # Add new master
 http://localhost:5000/new/master
