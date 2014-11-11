@@ -1,6 +1,6 @@
 from flask.ext.restful import reqparse, Resource
 
-from app.helpers.api_helpers import resize_replication_controller
+from stormy.app.helpers.api_helpers import resize_replication_controller
 
 
 # request.args.get('myParam')

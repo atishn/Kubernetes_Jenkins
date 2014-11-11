@@ -1,6 +1,6 @@
 from flask.ext.restful import reqparse, Resource
 
-from app.helpers.api_helpers import new_replication_controller, get_pod_byid, findHostPort
+from stormy.app.helpers.api_helpers import new_replication_controller, get_pod_byid, findHostPort
 
 
 class NewReplicationController(Resource):
@@ -24,7 +24,6 @@ class NewSlaveReplication(Resource):
         pod = get_pod_byid('jenkinsmaster')
         podIp = findHostPort(pod)
 
-        server_response = new_replication_controller('jenkinsslave', 2, 'jenkins_slave_docker', [[48673, 48673]],
-                                                     [["MASTERHOST", podIp]])
+        server_response = new_replication_controller('jenkinsslave', 2, 'jenkins_slave_docker', [],[["MASTERHOST", podIp]])
 
         return server_response

@@ -4,7 +4,7 @@ from flask import current_app as app
 import requests
 
 
-def new_replication_controller(name, num, image, ports=None, variables=None):
+def new_replication_controller(name, num, image, ports=[], variables=None):
     ports_json = bulid_ports_json(ports)
     env_json = build_env_json(variables)
 

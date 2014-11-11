@@ -1,6 +1,6 @@
 from flask.ext.restful import reqparse, Resource
 
-from app.helpers.api_helpers import new_service
+from stormy.app.helpers.api_helpers import new_service
 
 
 class NewService(Resource):

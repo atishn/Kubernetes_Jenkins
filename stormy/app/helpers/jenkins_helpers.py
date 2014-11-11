@@ -1,7 +1,7 @@
 from jenkinsapi.jenkins import Jenkins
 
 from flask import current_app as app
-from app.helpers import api_helpers
+from stormy.app.helpers import api_helpers
 
 def get_running_jenkins_jobs():
     num_running = 0

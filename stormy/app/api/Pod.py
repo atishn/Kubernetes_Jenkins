@@ -2,9 +2,9 @@ from flask.ext.restful import reqparse, Resource
 
 from flask.ext import restful
 
-from app.helpers.api_helpers import new_pod
+from stormy.app.helpers.api_helpers import new_pod
 
-from app.helpers import api_helpers
+from stormy.app.helpers import api_helpers
 
 
 class NewPod(Resource):

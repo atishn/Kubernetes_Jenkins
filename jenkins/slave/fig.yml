@@ -1,0 +1,4 @@
+slave:
+  build: .
+  environment:
+     MASTERHOST: 192.168.59.103
