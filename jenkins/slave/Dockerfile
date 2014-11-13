@@ -12,4 +12,4 @@ RUN curl -O "http://maven.jenkins-ci.org/content/repositories/releases/org/jenki
 
 #Connect to Swarm to Jenkins Master Client. For now we need to hard code Jenkins Master address.
 #ENTRYPOINT java -jar swarm-client-1.20-jar-with-dependencies.jar -master http://146.148.68.139:49151
-ENTRYPOINT java -jar swarm-client-1.20-jar-with-dependencies.jar -master http://$MASTERHOST:49151
+ENTRYPOINT java -jar swarm-client-1.20-jar-with-dependencies.jar -master http://$JENKINS_MASTER_HOST:$JENKINS_MASTER_PORT

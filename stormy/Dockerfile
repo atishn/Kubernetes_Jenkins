@@ -31,4 +31,4 @@ RUN mkdir -p ~/celery
 WORKDIR /home/stormy/stormy-flask
 
 #Run the Celery Batch Job
-CMD celery -A stormy_app.celery worker --loglevel=info --beat --master_kube_ip=$MASTERKUBEIP -l info -n name --logfile=~/celery/celery.log --pidfile=~/celery/celery.log --schedule=~/celery/beat.db
+CMD celery -A stormy_app.celery worker --loglevel=info --beat --master_kube_ip=$MASTERKUBEIP --kube_user=$USERID --kube_pass=$PASSKEY -l info -n name --logfile=~/celery/celery.log --pidfile=~/celery/celery.log --schedule=~/celery/beat.db

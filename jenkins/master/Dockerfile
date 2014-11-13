@@ -25,7 +25,11 @@ ADD ./config.xml /var/lib/jenkins/.jenkins/
 ## Clean up any permission issues
 RUN chown -R jenkins:jenkins /var/lib/jenkins
 
+# Exposing Jenkins Port
 EXPOSE 8090
+
+# Jenkins is configured with JNLP Slave port in config.xml. Exposing here from slaves access.
 EXPOSE 48673
 
+# Run at the entry point
 ENTRYPOINT exec su jenkins -c "java -jar /usr/share/jenkins/jenkins.war --httpPort=8090 --ajp13Port=-1"

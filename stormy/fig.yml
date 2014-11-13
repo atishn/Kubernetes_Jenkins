@@ -2,3 +2,5 @@ stormy:
   build: .
   environment:
      MASTERKUBEIP: 130.211.113.209
+     USERID: admin
+     PASSKEY: 8kWoiRHXgxNd20dS

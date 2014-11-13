@@ -3,6 +3,7 @@ from jenkinsapi.jenkins import Jenkins
 from flask import current_app as app
 from app.helpers import api_helpers
 
+
 def get_running_jenkins_jobs():
     num_running = 0
     server = get_jenkins_server_instance()
@@ -16,11 +17,9 @@ def get_running_jenkins_jobs():
 
 
 def get_jenkins_server_instance():
-
-    pod = api_helpers.get_pod_byid('jenkinsmaster')
+    pod = api_helpers.get_pod_byid(app.config['JENKINS_MASTER_POD'])
     hostIp = api_helpers.findHostPort(pod)
-    #jenkins_url = app.config['JENKINS_URL']
+    jenkins_url = 'http://{0}:{1}'.format(hostIp, app.config['JENKINS_MASTER_PORT'])  # http://23.251.155.231:49151
+    server = Jenkins(jenkins_url, username=app.config['JENKINS_USER'], password=app.config['JENKINS_PASS'])
 
-    jenkins_url = 'http://{0}:{1}'.format(hostIp, 49151) #http://23.251.155.231:49151
-    server = Jenkins(jenkins_url, username = app.config['JENKINS_USER'], password = app.config['JENKINS_PASS'])
     return server

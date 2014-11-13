@@ -37,7 +37,7 @@ Go to 'slave' Folder
 
 To Spin up slaves, make sure you updated master docker ip address.
 * docker build -t jenkins_slave .
-* docker run -d -P -e "MASTERHOST=<Jenkins-MASTERIP>" --name jenkins_slave_instance -t jenkins_slave
+* docker run -d -P -e "JENKINS_MASTER_HOST=<Jenkins-MASTERIP>" -e "JENKINS_MASTER_PORT=<Jenkins-MASTER-Port>" --name jenkins_slave_instance -t jenkins_slave
 
 To Push Docker image on Docker Registry
 

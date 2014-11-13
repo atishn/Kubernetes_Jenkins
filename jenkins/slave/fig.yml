@@ -1,4 +1,6 @@
 slave:
   build: .
   environment:
-     MASTERHOST: 192.168.59.103
+     JENKINS_MASTER_HOST: 192.168.59.103
+     JENKINS_MASTER_PORT: 49151
+

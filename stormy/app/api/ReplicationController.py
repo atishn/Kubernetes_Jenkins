@@ -1,6 +1,7 @@
 from flask.ext.restful import reqparse, Resource
 
 from app.helpers.api_helpers import new_replication_controller, get_pod_byid, findHostPort
+from flask import current_app as app
 
 
 class NewReplicationController(Resource):
@@ -21,9 +22,9 @@ class NewReplicationController(Resource):
 
 class NewSlaveReplication(Resource):
     def get(self):
-        pod = get_pod_byid('jenkinsmaster')
+        pod = get_pod_byid(app.config['JENKINS_MASTER_POD'])
         podIp = findHostPort(pod)
 
-        server_response = new_replication_controller('jenkinsslave', 2, 'jenkins_slave_docker', [],[["MASTERHOST", podIp]])
+        server_response = new_replication_controller(app.config['JENKINS_SLAVE_POD_NAME'], app.config['JENKINS_SLAVE_CONTROLLER'], app.config['JENKINS_SLAVE_INIT_SIZE'] , app.config['JENKINS_MASTER_DOCKER'], [], [["JENKINS_MASTER_HOST", podIp],[["JENKINS_MASTER_PORT", app.config['JENKINS_MASTER_PORT']]]])
 
         return server_response
