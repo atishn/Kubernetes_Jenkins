@@ -166,9 +166,14 @@ def bulid_ports_json(ports):
     return port_json
 
 def build_env_json(env):
+
+    print env
+
     env_json = []
 
     for p in env:
+        print p
+
         json = {'name': p[0], 'value': p[1]}
         env_json.append(json)
     return env_json

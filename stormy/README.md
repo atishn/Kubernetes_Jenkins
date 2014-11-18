@@ -14,8 +14,8 @@ Download the [repo](https://stash.hugeinc.com/projects/GLCS/repos/stormy-flask/b
 
     brew install redis
     pip install -r requirements.txt
-    python stormy_app.py --master_kube_ip 130.211.113.209
-    celery -A stormy_app.celery worker --loglevel=info --beat --master_kube_ip=130.211.113.209 --kube_user=admin --kube_pass=8kWoiRHXgxNd20dS
+    python stormy_app.py --master_kube_ip 130.211.113.209 --kube_user=admin --kube_pass=8kWoiRHXgxNd20dS --master_docker=master_masterdocker --slave_docker=slave_slavedocker
+    celery -A stormy_app.celery worker --loglevel=info --beat --master_kube_ip=130.211.113.209 --kube_user=admin --kube_pass=8kWoiRHXgxNd20dS --master_docker= --slave_docker=
 
 # Use Fig App to make your life easy and run the docker
     fig up

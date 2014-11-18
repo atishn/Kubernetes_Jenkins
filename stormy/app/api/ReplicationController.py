@@ -25,6 +25,6 @@ class NewSlaveReplication(Resource):
         pod = get_pod_byid(app.config['JENKINS_MASTER_POD'])
         podIp = findHostPort(pod)
 
-        server_response = new_replication_controller(app.config['JENKINS_SLAVE_POD_NAME'], app.config['JENKINS_SLAVE_CONTROLLER'], app.config['JENKINS_SLAVE_INIT_SIZE'] , app.config['JENKINS_MASTER_DOCKER'], [], [["JENKINS_MASTER_HOST", podIp],[["JENKINS_MASTER_PORT", app.config['JENKINS_MASTER_PORT']]]])
+        server_response = new_replication_controller(app.config['JENKINS_SLAVE_POD_NAME'], app.config['JENKINS_SLAVE_CONTROLLER'], app.config['JENKINS_SLAVE_INIT_SIZE'] , app.config['JENKINS_SLAVE_DOCKER'], [], [["JENKINS_MASTER_HOST", podIp],["JENKINS_MASTER_PORT", app.config['JENKINS_MASTER_PORT']]])
 
         return server_response

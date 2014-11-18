@@ -5,6 +5,7 @@ from flask.ext import restful
 from app.helpers.api_helpers import new_pod
 
 from app.helpers import api_helpers
+from flask import current_app as app
 
 
 class NewPod(Resource):
@@ -23,7 +24,7 @@ class NewPod(Resource):
 
 class NewJenkinsMaster(Resource):
     def get(self):
-        server_response = new_pod('jenkinsmaster', 'jenkins_master_docker', [[8090, 49151], [48673, 48673]])
+        server_response = new_pod(app.config['JENKINS_MASTER_POD'], app.config['JENKINS_MASTER_DOCKER'], [[app.config['JENKINS_MASTER_RUNNING_PORT'], app.config['JENKINS_MASTER_PORT']], [app.config['JENKINS_MASTER_JNLP_PORT'], app.config['JENKINS_MASTER_JNLP_PORT']]])
         return server_response
 
 
