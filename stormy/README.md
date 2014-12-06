@@ -1,5 +1,5 @@
 ## Info
-Story Celery app is Python based Utility which facilitates the handling of Jenkins Master slave enviornment with Kubernetes cluster using simplified API calls.
+Story Celery app is Python based Utility which facilitates the handling of Jenkins Master slave enviornment with Kubernetes cluster.
 Stormy connects to Master node of your Kubernetes GCE cluster, and controls the spinup/ spindown of Jenkins Master and Slave pod instances through Kubernetes supported REST API.
 
 ## Stack
