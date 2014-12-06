@@ -1,6 +1,17 @@
 stormy:
   build: .
+  links:
+   - redis
   environment:
-     MASTERKUBEIP: 130.211.113.209
+     MASTERKUBEIP: 130.211.113.211
      USERID: admin
      PASSKEY: 8kWoiRHXgxNd20dS
+     MASTERDOCKER: master_master
+     SLAVEDOCKER: slave_slave
+     DOCKERREGISTRY: huge
+
+redis:
+  image: redis
+
+
+

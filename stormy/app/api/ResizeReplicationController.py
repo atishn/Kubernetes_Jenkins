@@ -16,7 +16,5 @@ class ResizeReplicationController(Resource):
         parser.add_argument('num', type=int, help='num_pods cannot be converted')
         args = parser.parse_args()
 
-        server_response = resize_replication_controller(args['id'], args['num'])
-        return server_response
-
+        resize_replication_controller(args['id'], args['num'])
 
