@@ -71,16 +71,14 @@ Download the [repo](https://stash.hugeinc.com/projects/GLCS/repos/stormy-flask/b
 
     brew install redis
     pip install -r requirements.txt
-    ## Add entry of  146.148.35.179 redis in /etc/hosts . If you are running redis on different server , please update it.
+    Add entry of  146.148.35.179 redis in /etc/hosts . If you are running redis on different server , please update it.
+    cd app
     celery -A stormy_app.celery worker --loglevel=info --beat --master_kube_ip=130.211.113.211 --kube_user=admin --kube_pass=8kWoiRHXgxNd20dS --master_docker=master_master --slave_docker=slave_slave --docker_registry=huge
-    #python stormy_app.py --master_kube_ip=130.211.113.211 --kube_user=admin --kube_pass=8kWoiRHXgxNd20dS --master_docker=master_master --slave_docker=slave_slave
-
 
 
 ## Build the Image and push to docker registry
     docker tag stormy_stormy xxxxx/stormy_stormy
     docker push xxxxx/stormy_stormy
-
 
 ## To run the app On Stormy Server ( For first time)
     docker run -d --name stormy_redis redis:2.8.17  # Need redis docker instance running

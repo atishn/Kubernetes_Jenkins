@@ -6,11 +6,6 @@ RUN wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key a
 RUN echo "deb http://pkg.jenkins-ci.org/debian binary/" >> /etc/apt/sources.list
 RUN apt-get update && apt-get install git jenkins -y
 
-## Create Jenkins Plugin Folder and seed it with Pipeline plugin and dependencies
-RUN mkdir -p /var/lib/jenkins/.jenkins/plugins
-ADD ./plugins/ /var/lib/jenkins/.jenkins/plugins/
-
-
 ## Time zone
 RUN echo America/New York > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
 
@@ -30,6 +25,25 @@ EXPOSE 8090
 
 # Jenkins is configured with JNLP Slave port in config.xml. Exposing here from slaves access.
 EXPOSE 48673
+
+# Change to user Jenkins for downloading plugins
+USER jenkins
+
+# Download plugins
+RUN mkdir -p /var/lib/jenkins/plugins_script
+ADD ./plugins_script /var/lib/jenkins/plugins_script/
+RUN sh /var/lib/jenkins/plugins_script/download_plugins.sh
+
+## Create Jenkins Plugin Folder and seed it with Pipeline plugin and dependencies
+RUN mkdir -p /var/lib/jenkins/.jenkins/plugins
+
+#Copy Downloaded plugins to Jenkins Plugin
+RUN cp -r /var/lib/jenkins/downloaded_plugins/* /var/lib/jenkins/.jenkins/plugins/
+
+
+## Update user back to root.
+USER root
+
 
 # Run at the entry point
 ENTRYPOINT exec su jenkins -c "java -jar /usr/share/jenkins/jenkins.war --httpPort=8090 --ajp13Port=-1"
