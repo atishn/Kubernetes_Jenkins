@@ -6,8 +6,6 @@ JENKINS_WAR=/usr/share/jenkins/jenkins.war
 cd ${JENKINS_HOME}
 java -jar ${JENKINS_WAR} --httpPort=8181 &
 
-sleep 60
-
 ## Can have smarter logic. This could work but didnt tested.
 #while ! grep 'INFO: Jenkins is fully up and running' jenkins.out
 #do
@@ -15,6 +13,7 @@ sleep 60
 #  sleep 5
 #done
 
+sleep 45
 
 echo "Jenkins is running, now get plugins.."
 

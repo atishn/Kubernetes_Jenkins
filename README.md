@@ -1,7 +1,6 @@
 ## Use Case
 Set up Jenkins Master/Slave environment using Dockerized Kubernetes cluster with Google Cloud Engine (GCE)
 
-
 This workspace includes, two submodules.
 
 ## Jenkins :

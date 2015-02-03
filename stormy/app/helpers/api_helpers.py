@@ -1,7 +1,7 @@
 import json
+import httplib
 
 from flask import current_app as app
-import httplib
 import requests
 
 
@@ -60,7 +60,8 @@ def resize_replication_controller(name, controller_id, num, image, ports=[], var
         new_controller = json.dumps(current_controller)
 
         requests.put(controller_url, data=new_controller,
-                                    auth=(app.config['API_USER'], app.config['API_PASS']), verify=False)
+                     auth=(app.config['API_USER'], app.config['API_PASS']), verify=False)
+
 
 def get_replication_size(controller_id):
     controller_url = 'https://{0}/api/v1beta1/replicationControllers/{1}'.format(app.config['MASTER_IP'], controller_id)
@@ -163,8 +164,8 @@ def bulid_ports_json(ports):
 
     return port_json
 
-def build_env_json(env):
 
+def build_env_json(env):
     print env
 
     env_json = []
