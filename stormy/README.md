@@ -1,65 +1,55 @@
 ## Info
-Story Celery app is Python based Utility which facilitates the handling of Jenkins Master slave enviornment with Kubernetes cluster.
-Stormy connects to Master node of your Kubernetes GCE cluster, and controls the spinup/ spindown of Jenkins Master and Slave pod instances through Kubernetes supported REST API.
+Story Celery app is Python based Utility which facilitates the control of auto scalable Jenkins Master Slave enviornment on the cloud with the Kubernetes orchestration using simplified Kubernetes REST API calls.
+Stormy connects to Master node of your Kubernetes cluster, and controls the spinup/ spindown of Jenkins Master and Slave instances as being said it uses Kubernetes supported REST API to do that.
 
 ## Stack
     Docker
     Python
     Celery
-    Flask
     REST
     Redis
     Fig
 
-Note : Stormy Flask app and Celery Cron job both needs ip address of master_kube_ip for http connection.
-You need to make sure you have valid Kubernetes cluster setup with up and running Master and Minion Nodes.
 
-For More info about setup, check out https://github.com/GoogleCloudPlatform/kubernetes
 
-List of commands to setup.
-gcloud components update preview
-gcloud preview container clusters list --zone us-central1-f
-gcloud preview container clusters create stormy-opensource --zone us-central1-f --num-nodes 3 --password HmDUZ0u6OVVC
+For More info about the Kubernetes, check out https://github.com/GoogleCloudPlatform/kubernetes
 
-gcloud preview container clusters list --zone us-central1-f
-k8s-stormy-opensource-master us-central1-f	k8s-stormy-opensource-master default 130.211.113.211
+Sample list of commands to host and connect to Kubernetes. In this example we are using GCE instances.
 
-Once setup make sure you can connect to Kubernetes Master node using Kubernetes provided REST API.
+	gcloud components update preview
+	gcloud preview container clusters list --zone us-central1-f
+	gcloud preview container clusters create stormy-opensource --zone us-central1-f --num-nodes 3 --password HmDUZ0u6OVVC
+	gcloud preview container clusters list --zone us-central1-f 
 
-I have shared couple of useful commands with an example of Master KubeIP = 130.211.113.211.
+Once setup make sure you can connect to Kubernetes Master node using Kubernetes provided REST API. I have shared couple of useful commands with an example of Master KubeIP = 130.211.113.211.
 
-https://130.211.113.211
-   
-"User": "admin",
-"Password": "HmDUZ0u6OVVC",
+	https://130.211.113.211
+	   
+	"User": "admin"
+	"Password": "HmDUZ0u6OVVC"
 
 You may need to open up ports from Node GCE instances as Jenkins Master and Slave needs to communicated through JNLP.
 
-gcutil addfirewall --allowed=tcp:49151 --target_tags=k8s-stormy-opensource-node k8s-stormy-opensource-node-49151
-gcutil addfirewall --allowed=tcp:48673 --target_tags=k8s-stormy-opensource-node k8s-stormy-opensource-node-48673
-
-gcloud preview container pods list --cluster stormy-opensource --zone us-central1-f
-
-
-The kubernetes master server ('kubernetes-master') has a built in API as described [here](http://cdn.rawgit.com/GoogleCloudPlatform/kubernetes/31a0daae3627c91bc96e1f02a6344cd76e294791/api/kubernetes.html): . It can be accessed via the public ip for the master server. 
-Stromy uses this REST API to add Master and Slave pods on to the cluster.
-
-There are additional parameters needed to run Stormy.
-
-List of all parameters needed
-1. Kuebernetes Master IP address Eg. 130.211.113.211
-2. Kubernetes User Id       Eg. admin
-3. Kubernetes Password      Eg. HmDUZ0u6OVVC
-4. Jenkins Master Docker Name Eg. master_master
-5. Jenkins Slave Docker Name Eg. slave_slave
-6. Docker registry name( Where Jenkins Master/Slave docker instances pushed) Eg. huge
+	gcutil addfirewall --allowed=tcp:49151 --target_tags=k8s-stormy-opensource-node k8s-stormy-opensource-node-49151
+	gcutil addfirewall --allowed=tcp:48673 --target_tags=k8s-stormy-opensource-node k8s-stormy-opensource-node-48673
+	gcloud preview container pods list --cluster stormy-opensource --zone us-central1-f
 
 
-This app can be run on local by 3 ways.
+Stormy app needs following parameters to start execution.
 
-1. Using Fig. # This one is good for quick local spinup
-2. Using Raw Docker commands. # This one is good when you build docker images and update it.
-3. Using Celery Python app.  # This one is good for debugging and developing application
+	1. Kuebernetes Master IP address Eg. 130.211.113.211
+	2. Kubernetes User Id       Eg. admin
+	3. Kubernetes Password      Eg. HmDUZ0u6OVVC
+	4. Jenkins Master Docker Name Eg. master_master
+	5. Jenkins Slave Docker Name Eg. slave_slave
+	6. Docker registry name( Where Jenkins Master/Slave docker instances pushed) Eg. huge
+
+
+This app is built with the Docker cluster in mind. But nontheless This app can be run on local by 3 ways.
+
+	1. Using Fig. # This one is good for quick local spinup
+	2. Using Raw Docker commands. # This one is good when you build docker images and update it.
+	3. Using Celery Python app.  # This one is good for debugging and developing application
 
 
 ## Way 1
@@ -104,16 +94,33 @@ Download the [repo](https://stash.hugeinc.com/projects/GLCS/repos/stormy-flask/b
 You can also see flask app configuration but its not in use any more, as Celery jobs takes care of everything. This Stormy docker can be run on local or any other cluster node.
 Its preferred to spin separate core-os node where stormy can run.
 
+## List of couple of useful commands.
 
-Couple of useful commands.
+### For Cluster Creation and Deletion
 
-gcloud preview container replicationcontrollers list --cluster stormy-opensource --zone us-central1-f 
-gcloud preview container replicationcontrollers resize jenkinsslaveController  --num-replicas 0 --cluster stormy-opensource --zone us-central1-f 
-gcloud preview container replicationcontrollers delete jenkinsslaveController --cluster stormy-opensource --zone us-central1-f
+	gcloud preview container clusters create stormy-jerkins --zone us-central1-f —num-nodes 3 —password HmDUZ0u6OVVC
+	gcloud preview container clusters delete stormy-jerkins --zone us-central1-f
 
-gcloud preview container pods list --cluster stormy-opensource --zone us-central1-f
-gcloud preview container pods delete jenkinsmaster --cluster stormy-opensource --zone us-central1-f  
+### For Pods Listing, Deletion.
 
+	gcloud preview container pods list --cluster stormy-jenkins --zone us-central1-f
+	gcloud preview container pods describe NAME --cluster stormy-jenkins --zone us-central1-f 
+	gcloud preview container pods delete NAME --cluster stormy-jenkins --zone us-central1-f 
 
-gcloud compute ssh --zone us-central1-f k8s-stormy-opensource-node-2
+### For Replication Controller List, Resize and Deletion.
+
+	gcloud preview container replicationcontrollers list --cluster stormy-jenkins --zone us-central1-f 
+	gcloud preview container replicationcontrollers resize NAME --num-replicas 0 --cluster stormy-jenkins --zone us-central1-f 
+	gcloud preview container replicationcontrollers delete NAME --cluster stormy-jenkins --zone us-central1-f
+
+### For SSH into the cluster
+
+	gcloud compute  ssh --zone us-central1-f k8s-stormy-jenkins-master
+	gcloud compute  ssh --zone us-central1-f k8s-stormy-jenkins-node-1
+	gcloud compute  ssh --zone us-central1-f k8s-stormy-jenkins-node-2
+ 
+### If new cluster is created, then couple of ports needs to be open for proper working of Jenkin Pods and Replication Controllers on slave nodes.
+	
+	gcutil addfirewall --allowed=tcp:49151 --target_tags=k8s-stormy-jenkins-node k8s-stormy-jenkins-node-49151
+	gcutil addfirewall --allowed=tcp:48673 --target_tags=k8s-stormy-jenkins-node k8s-stormy-jenkins-node-48673
 
