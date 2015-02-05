@@ -22,7 +22,7 @@ gcloud preview container clusters list --zone us-central1-f
 gcloud preview container clusters create stormy-opensource --zone us-central1-f --num-nodes 3 --password HmDUZ0u6OVVC
 
 gcloud preview container clusters list --zone us-central1-f
-k8s-stormy-opensource-master us-central1-f	k8s-stormy-opensource-master	 default 130.211.113.211
+k8s-stormy-opensource-master us-central1-f	k8s-stormy-opensource-master default 130.211.113.211
 
 Once setup make sure you can connect to Kubernetes Master node using Kubernetes provided REST API.
 
@@ -63,7 +63,6 @@ This app can be run on local by 3 ways.
 
 
 ## Way 1
-
 ##Install Fig
     sudo pip install -U fig
 
@@ -71,11 +70,11 @@ This app can be run on local by 3 ways.
     fig up
     
 ## Way 2
-
 ##Run the Docker traditional way if fig is not used
     docker build -t stormy_celery .
     docker run -d --name stormy_redis redis:2.8.17
     docker run -e "MASTERKUBEIP=130.211.113.211" -e "USERID=admin" -e "PASSKEY=HmDUZ0u6OVVC" -e "MASTERDOCKER=master_master" -e "SLAVEDOCKER=slave_slave" -e "DOCKERREGISTRY=huge" --name stormy_app --link stormy_redis:redis -t stormy_celery
+
 
 ## Way 3
 ## Run the app using python:
